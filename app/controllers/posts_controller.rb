@@ -23,13 +23,12 @@ class PostsController < ApplicationController
 
   def update
     @post.update(post_params)
+    @post.author = Author.find_or_create_by(post_params[:name])
+    @post.save
     redirect_to post_path(@post)
   end
 
-  def post_data
-    post = Post.find(params[:id])
-    render plain: post.description
-  end
+
 
   def post_data
     post = Post.find(params[:id])
@@ -44,6 +43,6 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def post_params
-    params.require(:post).permit(:title, :description)
+    params.require(:post).permit(:title, :description, :name)
   end
 end
